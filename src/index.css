@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Prata&display=swap');
+
+@tailwind base;
+
+body {@apply font-Lexend;}
+/* Input */
+.input{@apply w-full bg-l4 border border-l2 rounded-lg py-2 px-3.5 2xl:px-5 text-14 2xl:text-16 font-normal text-g1 block outline-none;}
+.label{@apply text-12 md:text-14 text-g1 font-semibold block mb-1;}
+.btn_primary{@apply w-full flex items-center justify-center space-x-1 whitespace-nowrap py-1.5 lg:py-2 px-3 lg:px-4 2xl:px-6 bg-primary border border-primary rounded-lg text-12 lg:text-14 2xl:text-16 font-semibold text-white hover:bg-white hover:border-primary hover:text-primary;}
+.btn_secondary{@apply w-full whitespace-nowrap inline-block py-1.5 lg:py-2 px-3 lg:px-4 2xl:px-6 bg-white border border-primary rounded-lg text-12 lg:text-14 2xl:text-16 font-semibold text-primary hover:bg-primary hover:border-primary hover:text-white;}
+.excel_btn{@apply w-full bg-white border border-l2 rounded-[10px] py-1.5 lg:py-2 px-3.5 2xl:px-5 text-14 2xl:text-16 font-medium text-g1 block outline-none;}
+.error {@apply text-[10px] 2xl:text-12 absolute bottom-0 left-2.5 xl:left-3.5 2xl:left-5 bg-white text-red;}
+h3,.h3{@apply text-22 md:text-26 lg:text-30 2xl:text-36 font-medium text-g1;}
+.nav_link{@apply flex items-center py-2.5 2xl:py-3 px-2.5 md:px-3 lg:px-4 2xl:px-5 rounded-xl;}
+/* .side_bar.active{@apply ;} */
+.anim{@apply duration-300 transition-all;}
+.side_bar.active aside ul .nav_link span:last-child {@apply lg:invisible lg:w-0 lg:overflow-hidden;}
+.side_bar.active aside {@apply lg:w-[92px];}
+.side_bar.active .main { @apply lg:w-[calc(100%-92px)];}
+.side_bar.active .logo {@apply lg:invisible;}
+.side_bar.active aside ul .nav_link {@apply lg:pl-3;}
+.side_bar.active aside ul a.nav_link .drop_down {@apply lg:invisible lg:w-0 lg:overflow-hidden;}
+.side_bar.active aside ul .nav_link.title_menu span:nth-child(2) {@apply lg:invisible lg:w-0 lg:overflow-hidden;}
+.nav_link.active {
+  background-color: #FF7E2E !important;
+}
+.nav_link.active span{@apply text-white;}
+.nav_link.active>span{@apply visible -translate-x-0;}
+.side_bar li>ul>li .active {
+  color: #FF7E2E !important;
+}
+.side_bar.active .title_menu.active + ul.drop_down{@apply lg:hidden;}
+.main_shadow{box-shadow: 0px 2px 16px 10px rgba(12, 26, 36, 0.05);}
+
+/* Table css start  */
+.custom_table table tr th{@apply text-14 font-semibold text-g1 px-2 py-1.5 bg-l3 whitespace-nowrap border-r border-l2 text-left;}
+.custom_table table tr td{@apply text-14 font-normal text-g6 px-2 py-1.5 whitespace-nowrap bg-white border-collapse border border-l3;}
+.custom_table table tr:nth-child(even) td{@apply bg-l4;}
+/* Table css end  */
+
+/* Scrollbar Start */
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background-color: #f5f5f5;
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+  background-color: #f5f5f5;
+}
+#open_sidebar ::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+  background-color: #f5f5f5;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #002b95;
+}
+
+@media (max-width: 1440px) {
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+}
+
+/* Scrollbar End */
+
+/* Phone input css start */
+.phone-input .flag-dropdown {@apply hidden;}
+.phone-input .form-control {@apply p-0 m-0 bg-transparent border-none h-auto w-full text-14 2xl:text-16 font-normal text-g1 !important;}
+
+/* Text Editor */
+.text-Editor.input{@apply p-0 overflow-hidden;}
+.text-Editor .ql-toolbar {@apply border-0 border-b bg-[#193B670D] !important;}
+.text-Editor .ql-container {@apply border-0 !important;}
+
+/* Drop Down */
+.p-dropdown.p-component.input_sub .p-dropdown-label.p-inputtext, .p-dropdown.p-component.input .p-dropdown-label.p-inputtext, .p-multiselect .p-multiselect-label{@apply p-0 text-g1;}
+.p-dropdown.p-inputwrapper-focus, .p-multiselect, .p-inputtext {@apply shadow-none outline-none !important;}
+.p-dropdown-item {@apply outline-none}
+.p-dropdown-filter{@apply border border-l2}
+.p-inputwrapper .p-dropdown-label.p-placeholder,.p-multiselect .p-multiselect-label.p-placeholder{@apply text-g7 !important}
+.p-multiselect-panel .p-multiselect-items {@apply bg-l3;}
+.p-multiselect-panel .p-multiselect-header{@apply bg-l2;}
+.p-multiselect-panel .p-multiselect-item.p-focus {@apply bg-g1/30;}
+.p-multiselect-panel .p-multiselect-item.p-highlight {@apply bg-transparent text-g1;}
+.p-multiselect-panel .p-multiselect-item.p-highlight .p-checkbox-box, .p-multiselect-select-all .p-highlight .p-checkbox-box {@apply bg-primary text-g1;}
+/* Calender  */
+.p-calendar input, .p-button, .p-autocomplete-input {@apply bg-transparent shadow-none;}
+.p-calendar-w-btn-right .p-button.p-button-icon-only {@apply w-auto ml-2.5;}
+
+/* Highlight Calender and DropDown Selected */
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight, .p-datepicker table td>span.p-highlight, .p-autocomplete-item.p-highlight{@apply bg-primary text-g1;}
+
+
+@tailwind components;
+@tailwind utilities;

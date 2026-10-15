@@ -1,0 +1,117 @@
+import React, { useState, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { setPageName } from '../../Store/Action/Auth/Auth_Action'
+import CustomTable from '../../components/CustomTable'
+import CommonDialog from '../../common/CommonDialog'
+import CustomDropdown from '../../components/UI/CustomDropdown'
+import { Status } from '../../common/CommonArray'
+import { assets } from '../../assets/Images/assets'
+import AddEditGallery from './AddEditGallery'
+import { deleteGallery, listGallery } from '../../Store/Action/Gallery/Gallery_Action'
+import { useListGallery } from '../../Store/Selectors/Gallery/Gallery_Selectors'
+import toast from 'react-hot-toast'
+import moment from 'moment'
+
+
+const AllGallery = () => {
+    const [searchText, setSearchText] = useState("")
+    const [pagination, setPagination] = useState({ page: 1, limit: 10 })
+    const [isExporting, setIsExporting] = useState(false)
+    const [selectedStatus, setSelectedStatus] = useState("")
+    const [commonData, setCommonData] = useState({});
+    const [DeletePopup, setDeletePopup] = useState({ isOpen: false, resData: {} })
+    const [showAddEdit, setShowAddEdit] = useState({ isOpen: false, resData: {} });
+    const dispatch = useDispatch()
+    const galleryData = useListGallery()
+
+    const GetGalleryData = () => {
+        dispatch(listGallery())
+    }
+    useEffect(() => {
+        dispatch(setPageName("Gallery"))
+        GetGalleryData()
+    }, [])
+
+
+
+    const handleExport = () => {
+        setIsExporting(true)
+        setTimeout(() => {
+            setIsExporting(false)
+        }, 1000)
+    }
+
+    const DeleteOpenDialog = (rowData) => {
+        setCommonData({
+            title: "Delete Gallery Image",
+            description: "Are You Sure You Want To Delete This Gallery Image? ",
+            buttonNames: { firstBtn: "Cancel", secondBtn: "Delete" },
+        });
+        setDeletePopup({
+            isOpen: true,
+            resData: rowData,
+        });
+    };
+    
+    const deleteCloseDialog = async (closeEvent) => {
+        if (closeEvent) {
+            if (DeletePopup?.resData) {
+                let resData = DeletePopup?.resData;
+                const payload = { gallery_id: resData?._id || "", };
+                const response = await dispatch(deleteGallery(payload));
+                if (response?.IsSuccess) {
+                    toast.success(response?.Message);
+                    GetGalleryData();
+                }
+                setDeletePopup({
+                    isOpen: false,
+                    resData: {},
+                });
+            }
+        } else {
+            setDeletePopup({ isOpen: false, resData: {}, });
+        }
+    };
+
+    const columns = [
+        { key: "registerDate", label: "Date", renderCell: (key, row) => row?.createdAt ? moment.utc(row?.createdAt).format("DD-MM-YYYY") : "-" },
+        { key: "image", label: "Image", renderCell: (key, row) => <img src={import.meta.env.VITE_API_URL + row?.image} className="w-10 h-10 object-cover rounded-lg" alt="image" /> },
+        { key: "caption", label: "Caption", renderCell: (key, row) => row?.caption || "-" },
+        { key: "type", label: "Type", renderCell: (key, row) => <span className="capitalize">{row?.type || "-"}</span> },
+        {
+            key: "action", label: "Action", renderCell: (key, row) => <div className="flex items-center space-x-2.5">
+                <span className="icon-edit font-bold text-[18px] lg:text-[20px] xl:text-[24px] text-g1 cursor-pointer" onClick={() => setShowAddEdit({ isOpen: true, resData: row })}></span>
+                <span className="icon-trash text-[18px] lg:text-[20px] xl:text-[24px] text-red cursor-pointer" onClick={() => DeleteOpenDialog(row)}></span>
+            </div>
+        }
+    ]
+
+    return (
+        <>
+            <div className="bg-white rounded-xl lg:rounded-2xl main_shadow p-3 lg:p-4 xl:p-5 space-y-4 lg:space-y-6 xl:space-y-8">
+
+                <div className="flex items-center justify-between">
+                    <h6 className="text-20 font-semibold text-primary">All Gallery Images</h6>
+                    <button onClick={() => setShowAddEdit({ isOpen: true, resData: {} })} className='btn_primary w-auto '>
+                        <span className='icon-add text-[20px] xl:text-[24px]'></span>
+                        <span>Upload Image</span>
+                    </button>
+                </div>
+                <div className='flex flex-wrap items-center -mx-1.5 lg:-mx-2 2xl:-mx-3'>
+                    <div className='w-full xs:w-1/2 md:w-1/3 2xl:w-[358px] p-1.5 lg:p-2 2xl:p-3'>
+                        <div className="input w-full max-w-full flex items-center">
+                            <span className='icon-search text-g7 block text-[18px] xl:text-[20px] cursor-pointer'></span>
+                            <input type="text" placeholder='Search' className='w-full outline-none bg-transparent text-d3 pl-2.5 text-g1' value={searchText} onChange={(e) => setSearchText(e.target.value)} />
+                        </div>
+                    </div>  
+                </div>
+                <CustomTable columns={columns} data={galleryData?.payload?.Data || []} isPagination={false} loading={galleryData?.loading} />
+
+            </div>
+            {showAddEdit.isOpen && <AddEditGallery Data={showAddEdit.resData} onClose={(refresh) => { setShowAddEdit({ isOpen: false, resData: {} }); if (refresh) GetGalleryData(); }} />}
+            {DeletePopup.isOpen && <CommonDialog CommonData={commonData} closeCommonDialog={deleteCloseDialog} />}
+        </>
+    )
+}
+
+export default AllGallery
